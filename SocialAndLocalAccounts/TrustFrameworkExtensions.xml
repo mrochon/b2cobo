@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TrustFrameworkPolicy 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+  xmlns="http://schemas.microsoft.com/online/cpim/schemas/2013/06" 
+  PolicySchemaVersion="0.3.0.0" 
+  TenantId="yourtenant.onmicrosoft.com" 
+  PolicyId="B2C_1A_TrustFrameworkExtensions" 
+  PublicPolicyUri="http://yourtenant.onmicrosoft.com/B2C_1A_TrustFrameworkExtensions">
+  
+  <BasePolicy>
+    <TenantId>yourtenant.onmicrosoft.com</TenantId>
+    <PolicyId>B2C_1A_TrustFrameworkBase</PolicyId>
+  </BasePolicy>
+
+  <BuildingBlocks>
+    <ClaimsSchema>
+      <ClaimType Id="custom">
+        <DisplayName>Custom claim</DisplayName>
+        <DataType>string</DataType>
+      </ClaimType>    
+    </ClaimsSchema>
+  </BuildingBlocks>
+
+  <ClaimsProviders>
+
+    <ClaimsProvider>
+      <DisplayName>Facebook</DisplayName>
+      <TechnicalProfiles>
+        <TechnicalProfile Id="Facebook-OAUTH">
+          <Metadata>
+            <Item Key="client_id">facebook_clientid</Item>
+            <Item Key="scope">email public_profile</Item>
+            <Item Key="ClaimsEndpoint">https://graph.facebook.com/me?fields=id,first_name,last_name,name,email</Item>
+          </Metadata>
+        </TechnicalProfile>
+      </TechnicalProfiles>
+    </ClaimsProvider>
+
+
+    <ClaimsProvider>
+      <DisplayName>Local Account SignIn</DisplayName>
+      <TechnicalProfiles>
+        <TechnicalProfile Id="login-NonInteractive">
+          <Metadata>
+            <Item Key="client_id">ProxyIdentityExperienceFrameworkAppId</Item>
+            <Item Key="IdTokenAudience">IdentityExperienceFrameworkAppId</Item>
+          </Metadata>
+          <InputClaims>
+            <InputClaim ClaimTypeReferenceId="client_id" DefaultValue="ProxyIdentityExperienceFrameworkAppId" />
+            <InputClaim ClaimTypeReferenceId="resource_id" PartnerClaimType="resource" DefaultValue="IdentityExperienceFrameworkAppId" />
+          </InputClaims>
+        </TechnicalProfile>
+      </TechnicalProfiles>
+    </ClaimsProvider>
+
+    <ClaimsProvider>
+      <DisplayName>REST APIs</DisplayName>
+      <TechnicalProfiles>
+        <TechnicalProfile Id="REST-GetCustomClaim">
+          <DisplayName>Get a custom claim</DisplayName>
+          <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.RestfulProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          <Metadata>
+            <Item Key="ServiceUrl">https://b2coboweb.azurewebsites.net/CustomClaims</Item>
+            <Item Key="SendClaimsIn">QueryString</Item>
+            <!-- Set AuthenticationType to Basic or ClientCertificate in production environments -->
+            <Item Key="AuthenticationType">None</Item>
+            <!-- REMOVE the following line in production environments -->
+            <Item Key="AllowInsecureAuthInProduction">true</Item>
+          </Metadata>
+          <InputClaims>
+            <!-- Claims sent to your REST API -->
+            <InputClaim ClaimTypeReferenceId="objectId" PartnerClaimType="uid" />
+            <InputClaim ClaimTypeReferenceId="scope" DefaultValue="{OIDC:Scope}" AlwaysUseDefaultValue="true" />
+          </InputClaims>
+          <OutputClaims>
+            <!-- Claims parsed from your REST API -->
+            <OutputClaim ClaimTypeReferenceId="custom" />
+          </OutputClaims>
+          <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+        </TechnicalProfile>
+      </TechnicalProfiles>
+    </ClaimsProvider>    
+
+  </ClaimsProviders>
+
+    <UserJourneys>
+      <UserJourney Id="SignUpOrSignIn">
+        <OrchestrationSteps>
+          <OrchestrationStep Order="7" Type="ClaimsExchange">
+            <ClaimsExchanges>
+              <ClaimsExchange Id="RESTGetCustomClaim" TechnicalProfileReferenceId="REST-GetCustomClaim" />
+            </ClaimsExchanges>
+          </OrchestrationStep>
+
+          <OrchestrationStep Order="8" Type="SendClaims" CpimIssuerTechnicalProfileReferenceId="JwtIssuer" />
+        </OrchestrationSteps>
+      </UserJourney>
+
+    <UserJourney Id="OBO">
+      <OrchestrationSteps>
+        <OrchestrationStep Order="1" Type="ClaimsExchange">
+          <ClaimsExchanges>
+            <ClaimsExchange Id="AADUserReadWithObjectId" TechnicalProfileReferenceId="AAD-UserReadUsingObjectId" />
+          </ClaimsExchanges>
+        </OrchestrationStep> 
+          <OrchestrationStep Order="2" Type="ClaimsExchange">
+            <ClaimsExchanges>
+              <ClaimsExchange Id="RESTGetCustomClaim" TechnicalProfileReferenceId="REST-GetCustomClaim" />
+            </ClaimsExchanges>
+          </OrchestrationStep>             
+        <OrchestrationStep Order="3" Type="SendClaims" CpimIssuerTechnicalProfileReferenceId="JwtIssuer" />
+      </OrchestrationSteps>
+      <ClientDefinition ReferenceId="DefaultWeb" />
+    </UserJourney>        
+      
+	  </UserJourneys>
+
+</TrustFrameworkPolicy>
