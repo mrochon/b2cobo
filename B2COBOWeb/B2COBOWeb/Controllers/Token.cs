@@ -65,7 +65,7 @@ namespace B2COBOWeb.Controllers
             var resp = await http.SendAsync(req);
             if (!resp.IsSuccessStatusCode)
             {
-                return new JsonResult(new ErrorMsg() { userMessage = "Bad return from B2C" });
+                return new JsonResult(new ErrorMsg() { userMessage = "B2C did not accept the client assertion" });
             }
             var form = await resp.Content.ReadAsStringAsync();
             var authz = String.Empty;
@@ -74,7 +74,7 @@ namespace B2COBOWeb.Controllers
                 authz = GetCode(form);
             } catch
             {
-                return BadRequest("Provided token is invalid");
+                return BadRequest("Provided client assertion is invalid");
             }
 
             // Exchange authz code for a token
