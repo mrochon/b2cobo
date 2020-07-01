@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>0c8fac21-8a0e-4f6d-ac9c-1f7cabfadf23</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Identity.Web" Version="0.1.5-preview" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="0.1.5-preview" />
+  </ItemGroup>
+
+</Project>

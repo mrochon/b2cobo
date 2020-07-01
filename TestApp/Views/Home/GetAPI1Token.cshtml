@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "API1 token";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Token for API1</p>
+<p style="margin:20px">@ViewBag.Token</p>
+<input type="button"
+       value="Get OBO token to API2"
+       name="getapi2"
+       onClick="window.location.href='/home/getapi2token'">
+

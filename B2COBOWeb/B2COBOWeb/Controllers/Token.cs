@@ -120,5 +120,20 @@ namespace B2COBOWeb.Controllers
             var aud = JsonDocument.Parse(body).RootElement.GetProperty("aud").GetString();
             return String.Compare(client_id, aud) == 0;
         }
+
+        /*
+         * <!DOCTYPE html>
+<!-- Build: 1.0.1552.0 -->
+<!-- StateVersion: 2.1.1 -->
+<!-- DeploymentMode: Development -->
+<!-- CorrelationId: a64a396c-aa51-4b0e-affe-c7f7efa5f1da -->
+<!-- DataCenter: BY1 -->
+<!-- Slice: 001-000 -->
+<html lang="en-US"><head><link rel="icon" href="data:;base64,iVBORw0KGgo="><script data-script="jQuery" src="https://mrochonb2cprod.b2clogin.com/static/bundles/jquery-bundle-1.10.2.min.js?slice=001-000&dc=BY1" nonce="ziD3PoVICzz/cxP1VBQFQA=="></script><script data-container="true" nonce="ziD3PoVICzz/cxP1VBQFQA==">var GLOBALEX = {
+  "CorrelationId": "a64a396c-aa51-4b0e-affe-c7f7efa5f1da",
+  "Timestamp": "2020-07-01 02:22:15Z",
+  "Detail": "AADB2C90017: The client assertion provided in the request is invalid: 'client_secret' was used as the verification key"
+};
+         * */
     }
 }

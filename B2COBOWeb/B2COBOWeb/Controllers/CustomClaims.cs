@@ -40,7 +40,7 @@ namespace B2COBOWeb.Controllers
 				""5""
 			],
 			""clearanceCommercial"": [
-				""Bechtel Proprietary""
+				""Contoso Proprietary""
 			],
 			""clearanceGovernment"": [
 				""Secret""
@@ -66,20 +66,20 @@ namespace B2COBOWeb.Controllers
 
 		static string scopes = @"[
 			{
-				""name"": ""Pipe Design"",
-				""information"": ""Pipe Design"",
+				""name"": ""Widget Design"",
+				""information"": ""Widget Design"",
 				""permission"": [
 					""read"",
 					""update status""
 				],
 				""company"": [
-					""Bechtel Corp""
+					""Contoso Corp""
 				],
 				""GBU"": [
 					""NS&E""
 				],
 				""project"": [
-					""Vogtle Unit 3""
+					""Papa Unit 3""
 				],
 				""initiative"": [
 					""""
@@ -95,21 +95,21 @@ namespace B2COBOWeb.Controllers
 				]
 	},
 			{
-				""name"": ""Pipe Design"",
-				""information"": ""Pipe Design"",
+				""name"": ""Widget 2 Design"",
+				""information"": ""Widget 2 Design"",
 				""permission"": [
 					""read"",
 					""report"",
 					""archive""
 				],
 				""company"": [
-					""Bechtel Corp""
+					""Contoso Corp""
 				],
 				""GBU"": [
 					""NS&E""
 				],
 				""project"": [
-					""Vogtle Unit 4""
+					""Papa Unit 4""
 				],
 				""initiative"": [
 					""""
