@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
@@ -42,6 +44,8 @@ namespace B2COBOWeb.Controllers
                 return BadRequest("Bad or missing client assertion");
             if (string.IsNullOrEmpty(scope))
                 return BadRequest("Bad or missing scope");
+            if (!IsTokenForClient(assertion, client_id))
+                return BadRequest("Client assertion is for a different client application");
 
             // Initiate request to B2C
             var baseUrl =$"https://{_options.Value.tenantName}.b2clogin.com/{_options.Value.tenantId}/{_options.Value.oboJourneyName}/oauth2/v2.0";
@@ -97,6 +101,18 @@ namespace B2COBOWeb.Controllers
             var input = page.Descendants(dflt + "input").First();
             var code = input.Attribute("value").Value;
             return code;
+        }
+
+        private bool IsTokenForClient(string assertion, string client_id)
+        {
+            var body = assertion.Split('.')[1];
+            while ((body.Length % 4) != 0)
+            {
+                body += "=";
+            }
+            body = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(body));
+            var aud = JsonDocument.Parse(body).RootElement.GetProperty("aud").GetString();
+            return String.Compare(client_id, aud) == 0;
         }
     }
 }

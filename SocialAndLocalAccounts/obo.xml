@@ -21,6 +21,7 @@
         <InputClaim ClaimTypeReferenceId="objectId" PartnerClaimType="sub" Required="true" />
         <InputClaim ClaimTypeReferenceId="tenantId" />
         <InputClaim ClaimTypeReferenceId="email" />
+        <InputClaim ClaimTypeReferenceId="tokenOwner" PartnerClaimType="aud" />
       </InputClaims>
       <OutputClaims>
         <OutputClaim ClaimTypeReferenceId="displayName" />
