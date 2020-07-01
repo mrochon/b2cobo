@@ -1,4 +1,4 @@
-# B2C OBO sample 
+# AzureAD B2C OBO sample 
 Shows an implementation of [OAuth2 Extension grant (OBO)](https://tools.ietf.org/html/rfc6749#section-4.5) using Azure AD B2C.
 
 ## Introduction
