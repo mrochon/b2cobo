@@ -2,7 +2,20 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <div class="text-center">
+        <h1 class="display-4">OBO Demo</h1>
+        <div class="text-left">
+            <p>
+                Demonstrates use of a custom implementation enabling use OAuth2 Extension Flow (OBO) to get
+                an access token to an API using Azure B2C (B2C currently does not have this support natively).
+            </p>
+            <p><b>Note:</b> my OBO support is custom, sample code, not intended for production use.</p>
+            <p>
+                The Get API1 Token will ask you to log in to my B2C tenant. It is configured to issue an id
+                and an access token to API1 to this application. The UI will display the access token and give
+                you the option to call my custom web service, which uses some custom B2C journeys to issue
+                a new token to API2.
+            </p>
+            <p>Source is available here: <a href="https://github.com/mrochon/b2cobo">https://github.com/mrochon/b2cobo</a></p>
+        </div>
+       </div>

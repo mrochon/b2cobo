@@ -30,7 +30,7 @@ namespace TestApp.Controllers
             _oauth2 = oauth2;
             _conf = conf;
         }
-
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
