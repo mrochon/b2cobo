@@ -5,6 +5,9 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
 using B2COBOWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,7 +44,7 @@ namespace B2COBOWeb.Controllers
                 return BadRequest("Bad or missing scope");
 
             // Initiate request to B2C
-            var baseUrl =$"https://{_options.Value.tenantName}.b2clogin.com/{_options.Value.tenantId}/{_options.Value.oboJourneyName}/v2.0";
+            var baseUrl =$"https://{_options.Value.tenantName}.b2clogin.com/{_options.Value.tenantId}/{_options.Value.oboJourneyName}/oauth2/v2.0";
             var http = new HttpClient();
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["client_id"] = client_id;
@@ -87,11 +90,12 @@ namespace B2COBOWeb.Controllers
             return new OkObjectResult(tokenResp);
         }
 
+        static XNamespace dflt = "http://www.w3.org/1999/xhtml";
         private string GetCode(string form)
         {
-            var start = form.IndexOf("value='") + 7;
-            var end = form.IndexOf("'/>", start);
-            var code = form.Substring(start, end - start);
+            var page = XDocument.Parse(form);
+            var input = page.Descendants(dflt + "input").First();
+            var code = input.Attribute("value").Value;
             return code;
         }
     }

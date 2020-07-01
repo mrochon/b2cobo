@@ -26,7 +26,7 @@ namespace B2COBOWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<B2COptions>(options => Configuration.Bind("B2C"));
+            services.Configure<B2COptions>(options => Configuration.Bind("B2C", options));
             services.AddControllers();
         }
 
