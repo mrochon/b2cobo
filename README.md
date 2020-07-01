@@ -14,7 +14,8 @@ The request must include a client assertion, which is a previously received acce
 The endpoint makes a
 standard OAuth2 Authorization Code request to a [B2C custom journey](https://github.com/mrochon/b2cobo/blob/master/SocialAndLocalAccounts/obo.xml),
 including the client assertion. B2C validates the token and, provided the application presenting the token
-has been configured to requested API, issues a new token to that API.
+has been configured to requested API, issues an authorization code. The B2COBOWebApp uses this token client secret provided in the
+request to exchange the code and an access toke, which is then returned to the caller.
 
 TestApp in this repo is a [deployed sample client web app](https://b2cobotestapp.azurewebsites.net/) using the OBO request.
 
