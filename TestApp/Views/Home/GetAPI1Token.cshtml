@@ -4,9 +4,12 @@
 <h1>@ViewData["Title"]</h1>
 
 <p>Token for API1</p>
-<p style="margin:20px">@ViewBag.Token</p>
+<textarea rows="8" cols="80" wrap="hard">@ViewBag.Token</textarea>
+<br/>
 <input type="button"
        value="Get OBO token to API2"
        name="getapi2"
        onClick="window.location.href='/home/getapi2token'">
+
+
 
