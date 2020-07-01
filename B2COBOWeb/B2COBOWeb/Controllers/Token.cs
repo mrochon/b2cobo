@@ -68,8 +68,14 @@ namespace B2COBOWeb.Controllers
                 return new JsonResult(new ErrorMsg() { userMessage = "Bad return from B2C" });
             }
             var form = await resp.Content.ReadAsStringAsync();
-            var authz = GetCode(form);
-
+            var authz = String.Empty;
+            try
+            {
+                authz = GetCode(form);
+            } catch
+            {
+                return BadRequest("Provided token is invalid");
+            }
 
             // Exchange authz code for a token
             url = $"{baseUrl}/token";

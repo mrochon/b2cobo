@@ -26,8 +26,23 @@
       <ClaimType Id="scopes">
         <DisplayName>Custom claim</DisplayName>
         <DataType>string</DataType>
-      </ClaimType>               
+      </ClaimType>    
+      <ClaimType Id="tokenOwner">
+        <DisplayName>aud claim in OBO token</DisplayName>
+        <DataType>string</DataType>
+      </ClaimType>                    
     </ClaimsSchema>
+    <ClaimsTransformations>
+      <ClaimsTransformation Id="AssertClientIdAndAudAreEqual" TransformationMethod="AssertStringClaimsAreEqual">
+        <InputClaims>
+          <InputClaim ClaimTypeReferenceId="client_id" TransformationClaimType="inputClaim1" />
+          <InputClaim ClaimTypeReferenceId="tokenOwner" TransformationClaimType="inputClaim2" />
+        </InputClaims>
+        <InputParameters>
+          <InputParameter Id="stringComparison" DataType="string" Value="ordinalIgnoreCase" />
+        </InputParameters>
+      </ClaimsTransformation>    
+    </ClaimsTransformations>
   </BuildingBlocks>
 
   <ClaimsProviders>
@@ -151,8 +166,33 @@
           <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
         </TechnicalProfile>
       </TechnicalProfiles>
-    </ClaimsProvider>    
-
+    </ClaimsProvider>   
+    <ClaimsProvider>
+      <DisplayName>Self Asserted</DisplayName>
+      <TechnicalProfiles>
+        <TechnicalProfile Id="ValidateOBORequest">
+          <DisplayName>User ID signup</DisplayName>
+          <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          <Metadata>
+            <Item Key="ContentDefinitionReferenceId">api.selfasserted</Item>
+          </Metadata>
+          <CryptographicKeys>
+            <Key Id="issuer_secret" StorageReferenceId="B2C_1A_TokenSigningKeyContainer" />
+          </CryptographicKeys>
+          <InputClaims>
+            <InputClaim ClaimTypeReferenceId="tokenOwner" />
+            <InputClaim ClaimTypeReferenceId="client_id" DefaultValue="{OIDC:ClientId}" />
+          </InputClaims>
+          <OutputClaims>
+            <OutputClaim ClaimTypeReferenceId="tokenOwner" />
+          </OutputClaims>
+          <OutputClaimsTransformations>
+            <OutputClaimsTransformation ReferenceId="AssertClientIdAndAudAreEqual" />
+          </OutputClaimsTransformations>
+          <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+        </TechnicalProfile> 
+      </TechnicalProfiles>
+    </ClaimsProvider> 
   </ClaimsProviders>
 
   <UserJourneys>
@@ -234,15 +274,20 @@
       <OrchestrationSteps>
         <OrchestrationStep Order="1" Type="ClaimsExchange">
           <ClaimsExchanges>
+            <ClaimsExchange Id="Validate" TechnicalProfileReferenceId="ValidateOBORequest" />
+          </ClaimsExchanges>
+        </OrchestrationStep>
+        <OrchestrationStep Order="2" Type="ClaimsExchange">
+          <ClaimsExchanges>
             <ClaimsExchange Id="AADUserReadWithObjectId" TechnicalProfileReferenceId="AAD-UserReadUsingObjectId" />
           </ClaimsExchanges>
         </OrchestrationStep> 
-          <OrchestrationStep Order="2" Type="ClaimsExchange">
+          <OrchestrationStep Order="3" Type="ClaimsExchange">
             <ClaimsExchanges>
               <ClaimsExchange Id="RESTGetCustomClaim" TechnicalProfileReferenceId="REST-GetCustomClaim" />
             </ClaimsExchanges>
           </OrchestrationStep>             
-        <OrchestrationStep Order="3" Type="SendClaims" CpimIssuerTechnicalProfileReferenceId="JwtIssuer" />
+        <OrchestrationStep Order="4" Type="SendClaims" CpimIssuerTechnicalProfileReferenceId="JwtIssuer" />
       </OrchestrationSteps>
       <ClientDefinition ReferenceId="DefaultWeb" />
     </UserJourney>        
