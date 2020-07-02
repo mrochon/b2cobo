@@ -74,7 +74,7 @@ namespace B2COBOWeb.Controllers
                 authz = GetCode(form);
             } catch
             {
-                return BadRequest("Provided client assertion is invalid");
+                return BadRequest(form);
             }
 
             // Exchange authz code for a token
@@ -103,10 +103,14 @@ namespace B2COBOWeb.Controllers
         static XNamespace dflt = "http://www.w3.org/1999/xhtml";
         private string GetCode(string form)
         {
+            // Seems like B2C returns an invalid html when reporting errors. Parse fails.
             var page = XDocument.Parse(form);
             var input = page.Descendants(dflt + "input").First();
-            var code = input.Attribute("value").Value;
-            return code;
+            //if (input != null)
+                return input.Attribute("value").Value;
+            //var scriptWithError = page.Descendants(dflt + "script").First(el => el.Attribute("detail") != null);
+            //var error = scriptWithError != null ? scriptWithError.Attribute("detail").Value : "Unexpected response from B2C";
+            //throw new Exception(error);
         }
 
         private bool IsTokenForClient(string assertion, string client_id)
