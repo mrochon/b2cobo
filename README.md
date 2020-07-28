@@ -6,6 +6,10 @@ Currently, Azure B2C does not support the extension grant. This sample uses a cu
 handles the Extension Grant requests and communicates with B2C to respond with a valid response (access token). It uses a specific B2C tenant
 configured with custom journeys to handle this communication.
 
+This functionality can also be used to return different claim types and/or values in the id_token vs the access token requested by a client app: you can use OBO to exchange an id token
+for an access token to a different API. (Currently, 
+B2C will return same claim types and values in both tokens when using a single custom journey. *aud* and *scp* claims will obviously be different).
+
 **Note:** this sample code, not intended for production use.
 
 ## Design

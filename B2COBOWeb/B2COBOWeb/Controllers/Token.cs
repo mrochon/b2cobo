@@ -97,7 +97,7 @@ namespace B2COBOWeb.Controllers
             }
             var tokenResp = await resp.Content.ReadAsStringAsync();
 
-            return new OkObjectResult(tokenResp);
+            return Content(tokenResp, "application/json");
         }
 
         static XNamespace dflt = "http://www.w3.org/1999/xhtml";
