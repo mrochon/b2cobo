@@ -53,8 +53,8 @@ namespace TestApp.Controllers
             query["client_secret"] = opts.ClientSecret;
             query["scope"] = Constants.API2Scopes.First();
             query["grant_type"] = "urn:ietf:params:oauth:grant-type:jwt-bearer";
-            query["assertion"] = await _oauth2.GetAccessTokenForUserAsync(Constants.API1Scopes); 
-            var req = new HttpRequestMessage(HttpMethod.Post, "https://b2coboweb.azurewebsites.net/token")
+            query["assertion"] = await _oauth2.GetAccessTokenForUserAsync(Constants.API1Scopes);
+            var req = new HttpRequestMessage(HttpMethod.Post, $"{_conf.GetValue<string>("OBOServerUrl")}/token")
             {
                 Content = new StringContent(query.ToString(), Encoding.UTF8, "application/x-www-form-urlencoded")
             };
