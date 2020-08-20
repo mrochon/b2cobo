@@ -59,9 +59,9 @@ namespace B2COBOWeb.Controllers
             query["scope"] = scope;
             query["response_type"] = "code";
             query["redirect_uri"] = _options.Value.redirectUri;
-            var url = $"{baseUrl}/authorize?{query.ToString()}";
+            var url = $"{baseUrl}/authorize";
 
-            var req = new HttpRequestMessage(HttpMethod.Get, url);
+            var req = new HttpRequestMessage(HttpMethod.Post, url) { Content = new StringContent(query.ToString(), Encoding.UTF8, "application/x-www-form-urlencoded") };
             var resp = await http.SendAsync(req);
             if (!resp.IsSuccessStatusCode)
             {
