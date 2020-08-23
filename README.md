@@ -2,6 +2,10 @@
 Shows an implementation of [OAuth2 Extension grant (OBO)](https://tools.ietf.org/html/rfc6749#section-4.5) using Azure AD B2C.
 
 ## Introduction
+
+**Note: this code uses an OAuth2 request type (Authorization Code), which the authorization server (B2C) expects to receive from a user's browser, not a server process like inthis case. Therefore, at some scale
+B2C will consider it a DoS attack and throttle the requests. Do not use this code except for small, experimental or educational purposes.**
+
 Currently, Azure B2C does not support the extension grant. This sample uses a custom web service (B2BOBOWeb) to provide a token endpoint, which 
 handles the Extension Grant requests and communicates with B2C to respond with a valid response (access token). It uses a specific B2C tenant
 configured with custom journeys to handle this communication.
